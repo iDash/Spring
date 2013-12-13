@@ -1,6 +1,7 @@
 package quoters;
 
 import framework.Benchmark;
+import framework.Transaction;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ public class TalkingRobotImpl implements TalkingRobot {
 
     @Override
     @Benchmark
+    @Transaction
     public void talk() {
         for (Quoter quoter : quoters) {
             quoter.sayQuote();
