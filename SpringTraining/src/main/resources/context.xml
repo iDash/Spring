@@ -1,0 +1,32 @@
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <bean id="shakespeareQuoter" class="quoters.ShakespeareQuoter">
+        <property name="message" value="To be or not to be"/>
+    </bean>
+
+    <bean id="terminatorQuoter" class="quoters.TerminatorQuoter">
+        <property name="quotes">
+            <list>
+                <value>I'll be back</value>
+                <value>Sarah Conor</value>
+                <ref bean="myString"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="myString" class="java.lang.String">
+        <constructor-arg value="Astatavista"/>
+    </bean>
+
+    <bean class="quoters.TalkingRobotImpl" init-method="talk">
+        <property name="quoters">
+            <list>
+                <ref bean="shakespeareQuoter"/>
+                <ref bean="terminatorQuoter"/>
+            </list>
+        </property>
+    </bean>
+</beans>
