@@ -1,5 +1,7 @@
 package quoters;
 
+import framework.RunThisMethod;
+
 import javax.annotation.PostConstruct;
 import java.util.List;
 
@@ -11,6 +13,7 @@ public class TalkingRobotImpl implements TalkingRobot {
     }
 
     @Override
+    @RunThisMethod
     @PostConstruct
     public void talk() {
         for (Quoter quoter : quoters) {
