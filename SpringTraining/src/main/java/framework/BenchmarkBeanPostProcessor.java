@@ -1,13 +1,19 @@
 package framework;
 
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 public class BenchmarkBeanPostProcessor implements BeanPostProcessor {
+    @Autowired
+    private ConfigurableListableBeanFactory factory;
+
     @Override
     public Object postProcessBeforeInitialization(Object o, String s) throws BeansException {
         return o;
@@ -15,9 +21,16 @@ public class BenchmarkBeanPostProcessor implements BeanPostProcessor {
 
     @Override
     public Object postProcessAfterInitialization(final Object o, String s) throws BeansException {
-        Class<?> clazz = o.getClass();
+        BeanDefinition beanDefinition = factory.getBeanDefinition(s);
+        String beanClassName = beanDefinition.getBeanClassName();
+        Class<?> originalClass = null;
+        try {
+            originalClass = Class.forName(beanClassName);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
 
-        Method[] methods = clazz.getMethods();
+        Method[] methods = originalClass.getMethods();
         boolean benchmarkFound = false;
         for (Method method : methods) {
             if (method.isAnnotationPresent(Benchmark.class)) {
@@ -27,10 +40,11 @@ public class BenchmarkBeanPostProcessor implements BeanPostProcessor {
         }
 
         if (benchmarkFound) {
-            Object proxy = Proxy.newProxyInstance(clazz.getClassLoader(), clazz.getInterfaces(), new InvocationHandler() {
+            final Class finalOriginalClass = originalClass;
+            Object proxy = Proxy.newProxyInstance(originalClass.getClassLoader(), originalClass.getInterfaces(), new InvocationHandler() {
                 @Override
                 public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                    Method originalMethod = o.getClass().getMethod(method.getName(), method.getParameterTypes());
+                    Method originalMethod = finalOriginalClass.getMethod(method.getName(), method.getParameterTypes());
                     if (originalMethod.isAnnotationPresent(Benchmark.class)) {
                         long before = System.nanoTime();
                         Object retVal = method.invoke(o, args);
