@@ -11,8 +11,9 @@
     <bean class="framework.TransactionBeanPostProcessor"/>
 
     <bean class="framework.ReplaceDeprecatedBeanFactoryPostProcessor"/>
+    <bean class="framework.WarningBeanFactoryPostProcessor"/>
 
-    <bean id="shakespeareQuoter" class="quoters.ShakespeareQuoter">
+    <bean id="shakespeareQuoter" class="quoters.ShakespeareQuoter" scope="prototype" destroy-method="sayQuote">
         <property name="message" value="To be or not to be"/>
     </bean>
 
