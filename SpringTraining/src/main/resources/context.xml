@@ -5,9 +5,12 @@
 
     <bean class="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor"/>
     <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+
     <bean class="framework.RunThisMethodAnnotationBeanPostProcessor"/>
     <bean class="framework.BenchmarkBeanPostProcessor"/>
     <bean class="framework.TransactionBeanPostProcessor"/>
+
+    <bean class="framework.ReplaceDeprecatedBeanFactoryPostProcessor"/>
 
     <bean id="shakespeareQuoter" class="quoters.ShakespeareQuoter">
         <property name="message" value="To be or not to be"/>
