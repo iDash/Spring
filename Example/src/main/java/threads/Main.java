@@ -6,14 +6,14 @@ import java.util.concurrent.TimeUnit;
 
 public class Main {
     static int SIZE = 2;
-    static ArrayBlockingQueue<Place> places = new ArrayBlockingQueue<Place>(SIZE);
+    static ArrayBlockingQueue<Place> places = new ArrayBlockingQueue<>(SIZE);
 
     public static void main(String[] args) throws InterruptedException {
         for (int i = 0; i < SIZE; i++) {
             places.offer(new Place("PLACE" + i));
         }
 
-        LinkedList<Object> list = new LinkedList<Object>();
+        LinkedList<Object> list = new LinkedList<>();
         new LinkedList().poll();
         while (true) {
             Thread.currentThread().sleep(10);

@@ -12,7 +12,7 @@ public class Main {
         String result = null;
         try {
             // создайм инстанс необходимого перформера
-            c = Class.forName("reflection.Human");
+            c = Class.forName("main.java.reflection.Human");
             human = c.newInstance();
 
             // задаём сигнатуру метода который будем вызывать (у нас везде контекст)
